@@ -5,4 +5,11 @@
   <version>1.0</version>
   <name>TextBin</name>
   <description>Pastebin-like website for Twister</description>
+  <dependencies>
+  	<dependency>
+      <groupId>com.github.cage</groupId>
+  	  <artifactId>cage</artifactId>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
 </project>
