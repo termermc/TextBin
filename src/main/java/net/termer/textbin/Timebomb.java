@@ -19,7 +19,7 @@ public class Timebomb extends Thread {
 				for(int i = 0; i < keys.length; i++) {
 					posts.put(keys[i], new Integer(vals[i]-1));
 					if(posts.get(keys[i]).intValue()<1) {
-						System.out.println(new File("textbin/posts/"+keys[i]).delete());
+						new File("textbin/posts/"+keys[i]).delete();
 						posts.remove(keys[i]);
 					}
 				}

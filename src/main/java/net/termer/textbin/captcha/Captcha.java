@@ -19,7 +19,6 @@ import spark.Request;
  * @author termer
  * @since 1.0
  */
-@SuppressWarnings("restriction")
 public class Captcha {
 	
 	/**

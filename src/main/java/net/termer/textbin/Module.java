@@ -54,15 +54,16 @@ public class Module implements TwisterModule {
 						}
 					}
 					
-					String error = "";
-					if(req.queryParams("error") != null) {
-						error = req.queryParams("error");
-					}
-					
-					doc.replace("%error", error);
 					doc.replace("%postid", postId);
 					doc.replace("%post", post);
 				}
+				
+				String error = "";
+				if(req.queryParams("error") != null) {
+					error = req.queryParams("error");
+				}
+				
+				doc.replace("%error", error);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -87,7 +88,7 @@ public class Module implements TwisterModule {
 			File conf = new File("textbin.ini");
 			if(!conf.exists()) {
 				HashMap<String,String> configMap = new HashMap<String,String>();
-				configMap.put("expire-time", Double.toString(EXPIRE_TIME));
+				configMap.put("expire-time", Integer.toString(EXPIRE_TIME));
 				configMap.put("domain", DOMAIN);
 				Config.createConfig(conf, configMap, ":");
 			}
@@ -110,7 +111,7 @@ public class Module implements TwisterModule {
 				newPostDir.mkdirs();
 			}
 			if(!viewPostDir.exists()) {
-				newPostDir.mkdirs();
+				viewPostDir.mkdirs();
 			}
 			
 			File newPostPage = new File("domains/"+DOMAIN+"/new/index.html");
