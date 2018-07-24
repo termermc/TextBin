@@ -141,6 +141,10 @@ public class Module implements TwisterModule {
 				Writer.print(page, viewPostPage);
 			}
 			
+			// Delete posts
+			for(File post : postsDir.listFiles()) {
+				post.delete();
+			}
 		} catch (IOException e) {
 			System.err.println("Failed to load TextBin configuration file, using default settings");
 			e.printStackTrace();
