@@ -1,12 +1,10 @@
 package net.termer.textbin.handler;
 
-import java.io.File;
-
 import net.termer.textbin.Module;
+import net.termer.textbin.Post;
 import net.termer.textbin.captcha.Captcha;
 import net.termer.twister.handler.RequestHandler;
 import net.termer.twister.utils.StringFilter;
-import net.termer.twister.utils.Writer;
 import spark.Request;
 import spark.Response;
 
@@ -24,6 +22,10 @@ public class NewPostHandler implements RequestHandler {
 			if(req.queryParams("captcha") != null) {
 				captcha = req.queryParams("captcha");
 			}
+			int type = 0;
+			if(req.queryParams("type") != null) {
+				type = Integer.parseInt(req.queryParams("type"));
+			}
 			
 			if(Captcha.isCorrect(captcha, req)) {
 				String content = "";
@@ -34,11 +36,7 @@ public class NewPostHandler implements RequestHandler {
 				if(content.length()>0) {
 					String id = StringFilter.generateString(10);
 					
-					File postFile = new File("textbin/posts/"+id);
-					postFile.createNewFile();
-					Writer.print(content, postFile);
-					
-					Module.TIMEBOMB.register(id, Module.EXPIRE_TIME);
+					Post.create(id, content, Module.EXPIRE_TIME, type);
 					
 					res.redirect("/view/?id="+id);
 				} else {
