@@ -49,6 +49,9 @@ public class Module implements TwisterModule {
 								post+=(char)fin.read();
 							}
 							fin.close();
+							
+							// Escape "<" and ">"
+							post = post.replace("<", "&lt;").replace(">", "&gt;");
 						} else {
 							post = "Invalid post ID";
 						}
