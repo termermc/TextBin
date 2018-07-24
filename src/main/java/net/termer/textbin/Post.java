@@ -97,6 +97,6 @@ public class Post {
 	
 	public static class Type {
 		public static int PLAIN = 0;
-		public static int HTML = 0;
+		public static int HTML = 1;
 	}
 }
