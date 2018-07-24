@@ -1,7 +1,6 @@
 package net.termer.textbin;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -38,17 +37,14 @@ public class Module implements TwisterModule {
 				if(doc.getText().contains("%post")) {
 					String post = "Unknown post ID";
 					String postId = "";
+					String type = "-1";
 					
 					if(req.queryParams("id") != null) {
 						postId = req.queryParams("id");
-						File postFile = new File("textbin/posts/"+postId);
-						if(postFile.exists()) {
-							post = "";
-							FileInputStream fin = new FileInputStream(postFile);
-							while(fin.available()>0) {
-								post+=(char)fin.read();
-							}
-							fin.close();
+						if(Post.exists(postId)) {
+							post = Post.get(postId).getContent();
+							
+							type = Integer.toString(Post.get(postId).getType());
 							
 							// Escape "<" and ">"
 							post = post.replace("<", "&lt;").replace(">", "&gt;");
@@ -59,6 +55,7 @@ public class Module implements TwisterModule {
 					
 					doc.replace("%postid", postId);
 					doc.replace("%post", post);
+					doc.replace("%type", type);
 				}
 				
 				String error = "";
@@ -128,6 +125,11 @@ public class Module implements TwisterModule {
 						+ "\n"
 						+ "</textarea>\n"
 						+ "<br>\n"
+						+ "<select name=\"type\">\n"
+						+ "<option value=\"0\">Plain Text</option>\n"
+						+ "<option value=\"1\">HTML</option>\n"
+						+ "</select>\n"
+						+ "<br>\n"
 						+ "<img src=\"%captcha\" alt=\"captcha\"></img>\n"
 						+ "<br>\n"
 						+ "<label for=\"captcha\">Please enter the text above</label>\n"
@@ -138,9 +140,18 @@ public class Module implements TwisterModule {
 			}
 			if(!viewPostPage.exists()) {
 				viewPostPage.createNewFile();
-				String page = "<a href=\"/raw/?id=%postid\">View raw</a>\n"
+				String page = "<a id=\"raw\" style=\"display:none\" href=\"/raw/?id=%postid\"><button>View raw</button></a>\n"
+						+ "<a id=\"page\" style=\"display:none\" href=\"/page/?id=%postid\"><button>View page</button></a>\n"
 						+ "<br>\n"
-						+ "<textarea editable=\"false\">%post</textarea>";
+						+ "<textarea editable=\"false\">%post</textarea>\n"
+						+ "<script>\n"
+						+ "if(%type > -1) {\n"
+						+ "document.getElementById(\"raw\").style.display = \"block\";\n"
+						+ "}"
+						+ "if(%type === 1) {\n"
+						+ "document.getElementById(\"page\").style.display = \"block\";\n"
+						+ "}\n"
+						+ "</script>";
 				Writer.print(page, viewPostPage);
 			}
 			
