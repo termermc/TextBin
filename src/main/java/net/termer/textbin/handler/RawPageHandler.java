@@ -10,6 +10,9 @@ import spark.Response;
 
 public class RawPageHandler implements RequestHandler {
 	public String handle(Request req, Response res) {
+		// Set type to text/plain
+		res.type("text/plain");
+		
 		String r = "Unknown post ID";
 		
 		if(req.queryParams("id") != null) {
