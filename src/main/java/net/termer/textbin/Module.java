@@ -7,6 +7,7 @@ import java.util.HashMap;
 import net.termer.textbin.captcha.Captcha;
 import net.termer.textbin.handler.NewPostHandler;
 import net.termer.textbin.handler.RawPageHandler;
+import net.termer.textbin.handler.ViewPageHandler;
 import net.termer.twister.Twister;
 import net.termer.twister.document.DocumentProcessor;
 import net.termer.twister.document.HTMLDocumentResponse;
@@ -174,6 +175,7 @@ public class Module implements TwisterModule {
 		// Register request handlers
 		instance.addRequestHandler(DOMAIN, "/new/", new NewPostHandler(), Method.POST);
 		instance.addRequestHandler(DOMAIN, "/raw/", new RawPageHandler(), Method.GET);
+		instance.addRequestHandler(DOMAIN, "/page/", new ViewPageHandler(), Method.GET);
 	}
 
 	public void shutdownModule() {
@@ -186,6 +188,7 @@ public class Module implements TwisterModule {
 		// Unregister request handlers
 		Twister.current().removeRequestHandler(DOMAIN, "/new/", Method.POST);
 		Twister.current().removeRequestHandler(DOMAIN, "/raw/", Method.GET);
+		Twister.current().removeRequestHandler(DOMAIN, "/page/", Method.GET);
 	}
 	
 }
